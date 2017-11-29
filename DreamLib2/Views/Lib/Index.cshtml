@@ -38,7 +38,7 @@
                         {
                             <tbody>
                             <td>
-                                <p>@s.Name</p>
+                                <p>@Html.ActionLink($"{@s.Name}", "SongDetails", new { Id = s.Id })</p>
                             </td>
                             <td>
                                 <p>@s.Artist.Name</p>

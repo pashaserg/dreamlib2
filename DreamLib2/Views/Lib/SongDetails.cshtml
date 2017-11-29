@@ -1,0 +1,56 @@
+﻿@model DreamLib2.Models.SongDetails
+
+@{
+    ViewBag.Title = Model.Name + "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Artist)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Artist)
+        </dd>
+
+        @if (!Model.Src.IsEmpty())
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Src)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Src)
+            </dd>
+        }
+
+
+        @if (!Model.Cover.IsEmpty())
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Cover)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Cover)
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "EditSong", new {  id = Model. }) |*@
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -25,9 +25,22 @@ namespace DreamLib2.Controllers
 
         // GET: Lib/Details/5
         [HttpGet]
-        public ActionResult SongDetails(int id)
+        public ActionResult SongDetails(int? id)
         {
-            return View();
+            var song = libContext.Songs.Find(id);
+            if(id == null || song == null)
+            {
+                return RedirectToAction("Index");   /// httpnotfoundresult
+            }
+
+            var songDetails = new SongDetails
+            {
+                Artist = libContext.Artists.Find(song.ArtistId).Name,   //  !!!!
+                Name = song.Name,
+                Cover = song.Cover,
+                Src = song.Src
+            };
+            return View(songDetails);
         }
 
         // GET: Lib/Create
@@ -111,6 +124,7 @@ namespace DreamLib2.Controllers
         }
 
         // GET: Lib/Delete/5
+        [HttpDelete]
         public ActionResult DeleteSong(int? id)
         {
             var song = libContext.Songs.Find(id);
@@ -125,20 +139,5 @@ namespace DreamLib2.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: Lib/Delete/5
-        [HttpPost]
-        public ActionResult DeleteSong(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
