@@ -52,23 +52,22 @@ namespace DreamLib2.Controllers
                 var artist = libContext.Artists.FirstOrDefault(p => p.Name == newSong.Artist);
                 if(artist == null) // if artist is not exist
                 {
-                    libContext.Artists.Add(
+                    artist = libContext.Artists.Add(
                         new Artist
                         {
                             Name = newSong.Artist                            
                         });
-                    artist = libContext.Artists.FirstOrDefault(p => p.Name == newSong.Artist);
                 }
 
                 var genre = libContext.Genres.FirstOrDefault(p => p.Name == newSong.Genre);
                 if(genre == null)   //  if genre is not exist
                 {
-                    libContext.Genres.Add(
+                    genre = libContext.Genres.Add(
                         new Genre
                         {
                             Name = newSong.Genre
                         });
-                    genre = libContext.Genres.FirstOrDefault(p => p.Name == newSong.Genre);
+                    
                 }
 
                 libContext.Songs.Add(
@@ -89,9 +88,10 @@ namespace DreamLib2.Controllers
         }
 
         // GET: Lib/Edit/5
-        public ActionResult EditSong(int id)
+        public ActionResult EditSong(int? id)
         {
-            return View();
+                       
+            return RedirectToAction("Index");
         }
 
         // POST: Lib/Edit/5
@@ -111,9 +111,18 @@ namespace DreamLib2.Controllers
         }
 
         // GET: Lib/Delete/5
-        public ActionResult DeleteSong(int id)
+        public ActionResult DeleteSong(int? id)
         {
-            return View();
+            var song = libContext.Songs.Find(id);
+            if (id == null || song == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            libContext.Songs.Remove(song);
+            libContext.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         // POST: Lib/Delete/5

@@ -44,9 +44,7 @@
                                 <p>@s.Artist.Name</p>
                             </td>
                             <td>
-                                <button class="btn btn-default">
-                                    x
-                                </button>
+                                @Html.ActionLink("x", "DeleteSong", new {Id = s.Id })
                             </td>
                             </tbody>
                         }
