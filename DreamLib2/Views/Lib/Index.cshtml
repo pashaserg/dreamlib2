@@ -8,12 +8,15 @@
             <h1 class="text-center">
                 Hello, Baby!
             </h1>
+            <button class="btn btn-default">
+                @Html.ActionLink("Add Song", "CreateSong", "Lib") 
+            </button>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-10">
-                <h2 class="text-center">Top 10 Songs</h2>
+                <h2 class="text-center">Song List</h2>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -31,7 +34,7 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        @foreach (var s in ViewBag.Top10Songs)
+                        @foreach (var s in ViewBag.Songs)
                         {
                             <tbody>
                             <td>
@@ -55,7 +58,7 @@
                     <div class="col-md-12">
                         <h2>Genres List</h2>
                         <ul class="list-group">
-                            @foreach (var g in ViewBag.Top10Genres)
+                            @foreach (var g in ViewBag.Genres)
                             {
                                 <a href="#" class="list-group-item">@g.Name</a>
                             }
@@ -66,7 +69,7 @@
                     <div class="col-md-12">
                         <h2>Artist List</h2>
                         <ul class="list-group">
-                            @foreach (var a in ViewBag.Top10Artists)
+                            @foreach (var a in ViewBag.Artists)
                             {
                                 <a href="#" class="list-group-item">@a.Name</a>
                             }

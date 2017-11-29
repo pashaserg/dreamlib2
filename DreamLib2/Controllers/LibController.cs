@@ -17,9 +17,9 @@ namespace DreamLib2.Controllers
         // GET: Lib
         public async Task<ActionResult> Index()
         {
-            ViewBag.Top10Songs = libContext.Songs.OrderBy(p => p.Name).Take(10).Include(p => p.Artist);
-            ViewBag.Top10Artists = libContext.Artists.OrderByDescending(p => p.Songs.Count).ThenBy(p => p.Name).Take(10);
-            ViewBag.Top10Genres = libContext.Genres.OrderBy(p => p.Name).Take(10);
+            ViewBag.Songs = await libContext.Songs.Include(p => p.Artist).OrderBy(p => p.Name).ToListAsync();
+            ViewBag.Artists = await libContext.Artists.OrderByDescending(p => p.Songs.Count).ThenBy(p => p.Name).ToListAsync();
+            ViewBag.Genres = await libContext.Genres.OrderBy(p => p.Name).ToListAsync();
             return View();
         }
 
@@ -39,18 +39,53 @@ namespace DreamLib2.Controllers
 
         // POST: Lib/Create
         [HttpPost]
-        public ActionResult CreateSong(FormCollection collection)
+        public ActionResult CreateSong(SongEdit newSong)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                var song = libContext.Songs.FirstOrDefault(p => p.Name == newSong.Name);
+                if (song != null)   // if song exists
+                {
+                    return View("CreateSong");
+                }
 
-                return RedirectToAction("Index");
+                var artist = libContext.Artists.FirstOrDefault(p => p.Name == newSong.Artist);
+                if(artist == null) // if artist is not exist
+                {
+                    libContext.Artists.Add(
+                        new Artist
+                        {
+                            Name = newSong.Artist                            
+                        });
+                    artist = libContext.Artists.FirstOrDefault(p => p.Name == newSong.Artist);
+                }
+
+                var genre = libContext.Genres.FirstOrDefault(p => p.Name == newSong.Genre);
+                if(genre == null)   //  if genre is not exist
+                {
+                    libContext.Genres.Add(
+                        new Genre
+                        {
+                            Name = newSong.Genre
+                        });
+                    genre = libContext.Genres.FirstOrDefault(p => p.Name == newSong.Genre);
+                }
+
+                libContext.Songs.Add(
+                    new Song
+                    {
+                        Name = newSong.Name,
+                        Cover = newSong.Cover,
+                        CreatedDate = DateTime.Now,
+                        Src = newSong.Src,
+                        ArtistId = artist.Id,
+                    });
+
+                //Adding info at GenreSongs
+
+                libContext.SaveChanges();
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: Lib/Edit/5
